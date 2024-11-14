@@ -1,0 +1,3 @@
+/home/james/projects/ah/CMakeFiles/run.dir
+/home/james/projects/ah/CMakeFiles/edit_cache.dir
+/home/james/projects/ah/CMakeFiles/rebuild_cache.dir
