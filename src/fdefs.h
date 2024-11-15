@@ -13,7 +13,6 @@
     #define STGLENUM static GLenum
     #define STGLCHAR static GLchar
 
-
 #endif
 
 #if !defined(OBJ_DEFS) && defined(__OBJECTS_HPP__)
@@ -39,7 +38,7 @@
     
     #define STVEC(T) static std::vector<T>
     #define CNSTVEC(T) const std::vector<T>
-    #define CXPRVEC(T) constexpr std::vector<T>
+    #define CNSTXPRVEC(T) constexpr std::vector<T>
 #endif
 
 #if !defined(STR_DEFS) && defined(__STRING__)

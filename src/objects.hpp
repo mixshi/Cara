@@ -13,6 +13,8 @@
 
 #include "fdefs.h"
 
+template <typename T>
+
 //VAO
 class Vao {
 private:
@@ -51,6 +53,8 @@ private:
 public:
     void bind();
     void data(int, void*, GLenum);
+    void data(CNSTVEC(ushort)&, GLenum);
+    void data(CNSTVEC(uint)&, GLenum);
     STIBO gen();
     STVEC(Ibo) gen(int);
 
@@ -73,7 +77,7 @@ public:
 
     void set_vao(Vao);
     void set_vbo(Vbo);
-    void set_ibo(ibo);
+    void set_ibo(Ibo);
 
     STDOG gen();
     STVEC(DOG) gen(int);

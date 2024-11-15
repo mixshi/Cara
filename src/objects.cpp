@@ -33,6 +33,8 @@ void Vbo::bind() {
     glBindBuffer(GL_ARRAY_BUFFER, this -> id);
 }
 
+
+
 void Vbo::data(int size, void* data, GLenum type) {
     glBufferData (
         GL_ARRAY_BUFFER,

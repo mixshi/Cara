@@ -10,6 +10,8 @@ find_package(GLEW REQUIRED)
 
 add_executable(run ../src/main.cpp ../src/cara.cpp ../src/objects.cpp)
 
+add_executable(test ../src/tests.cpp)
+
 target_link_libraries(run glfw OpenGL::GL GLEW::GLEW)
 
 
