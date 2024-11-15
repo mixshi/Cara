@@ -12,7 +12,7 @@ __As of Nov 14, and likely stemming well into the new year of 2025 as developmen
 
 ## Example
 
-_Not yet stable, or even configurable for that matter._
+_Not yet stable, or even possible for that matter._
 
 ``` C++
 #include <cara>
@@ -35,7 +35,7 @@ void main() {
 )";
 
 const char* fragment_shader = R"(
-#version 330 core
+#version 330 coreCara
 
 in vec3 color;
 out vec4 fragColor;
