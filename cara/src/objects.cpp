@@ -3,9 +3,6 @@
 /*
  * Vertex Array Object
  * */
-void Vao::bind() {
-    glBindVertexArray(this->id);
-}
 
 Vao Vao::gen() {
     GLuint id;
@@ -26,23 +23,12 @@ std::vector<Vao> Vao::gen(int n) {
     return v;
 }
 
+
+
 /*
  * Vertex Buffer Object
  * */
-void Vbo::bind() {
-    glBindBuffer(GL_ARRAY_BUFFER, this -> id);
-}
 
-
-
-void Vbo::data(int size, void* data, GLenum type) {
-    glBufferData (
-        GL_ARRAY_BUFFER,
-        size,
-        data,
-        type
-    );
-}
 
 Vbo Vbo::gen() {
     GLuint id;
@@ -63,21 +49,37 @@ std::vector<Vbo> Vbo::gen(int n) {
     return v;
 }
 
-/*
- * Index Buffer Object
- * */
-void Ibo::bind() {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this -> id);
-}
-
-void Ibo::data(int size, void* data, GLenum type) {
-    glBufferData (
-        GL_ELEMENT_ARRAY_BUFFER,
-        size,
-        data,
+void Vbo::data(CNSTVEC(char)& vec, GLenum type) {
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        vec.size(),
+        vec.data(),
         type
     );
 }
+
+void Vbo::data(CNSTVEC(ushort)& vec, GLenum type) {
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        vec.size() *sizeof(ushort),
+        vec.data(),
+        type
+    );
+}
+
+void Vbo::data(CNSTVEC(uint)& vec, GLenum type) {
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        vec.size() *sizeof(uint),
+        vec.data(),
+        type
+    );
+}
+
+/*
+ * Index Buffer Object
+ * */
+
 
 Ibo Ibo::gen() {
     GLuint id;
@@ -98,6 +100,34 @@ std::vector<Ibo> Ibo::gen(int n) {
     return v;
 }
 
+void Ibo::data(CNSTVEC(char)& vec, GLenum type) {
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        vec.size(),
+        (void*)vec.data(),
+        type
+    );
+}
+void Ibo::data(CNSTVEC(ushort)& vec, GLenum type) {
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        vec.size() *sizeof(ushort),
+        (void*)vec.data(),
+        type
+    );
+}
+void Ibo::data(CNSTVEC(uint)& vec, GLenum type) {
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        vec.size() *sizeof(uint),
+        (void*)vec.data(),
+        type
+    );
+}
+
+/*
+ * Data Object Group
+ * */
 Vao DOG::get_vao() {
     return this -> vao;
 }
@@ -114,7 +144,7 @@ void DOG::set_vao(Vao vao) {
 void DOG::set_vbo(Vbo vbo) {
     this->vbo = vbo;
 }
-void DOG::set_ibo(ibo ibo) {
+void DOG::set_ibo(Ibo ibo) {
     this->ibo = ibo;
 }
 

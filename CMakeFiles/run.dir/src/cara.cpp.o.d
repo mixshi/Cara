@@ -1,5 +1,5 @@
-CMakeFiles/run.dir/src/cara.cpp.o: /home/james/projects/ah/src/cara.cpp \
- /usr/include/stdc-predef.h /home/james/projects/ah/src/cara.hpp \
+CMakeFiles/run.dir/src/cara.cpp.o: /home/james/projects/Cara/src/cara.cpp \
+ /usr/include/stdc-predef.h /home/james/projects/Cara/src/cara.hpp \
  /usr/include/c++/14.2.1/vector \
  /usr/include/c++/14.2.1/bits/requires_hosted.h \
  /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -159,5 +159,6 @@ CMakeFiles/run.dir/src/cara.cpp.o: /home/james/projects/ah/src/cara.cpp \
  /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/stdint-uintn.h \
  /usr/include/bits/stdint-least.h /usr/include/GL/glu.h \
- /usr/include/GL/gl.h /home/james/projects/ah/src/objects.hpp \
- /usr/include/GLFW/glfw3.h /home/james/projects/ah/src/fdefs.h
+ /usr/include/GL/gl.h /usr/include/GLFW/glfw3.h \
+ /home/james/projects/Cara/src/objects.hpp \
+ /home/james/projects/Cara/src/fdefs.h

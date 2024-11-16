@@ -1,7 +1,7 @@
 
 #include "cara.hpp"
 
-std::vector<GLuint> 
+std::vector<Vao> 
     Cara::vaos;
 
 drawFN* 
@@ -9,7 +9,6 @@ drawFN*
 
 std::vector<drawFN*> 
     Cara::drawFNs;
-
 
 void Cara::add_vao(GLuint vao) {
     Cara::vaos.push_back(vao);
@@ -47,13 +46,13 @@ void Cara::add_vaos(int vaoc, GLuint* vao, drawFN** dfns) {
     }
 }
 
-void Cara::add_vaos(CNSTVEC(Vao) vaos) {
+void Cara::add_vaos(CNSTVEC(Vao)& vaos) {
     Cara::vaos.insert(Cara::vaos.end(), vaos.begin(), vaos.end());
 }
 
 int Cara::find_vao_idx(GLuint vao) {
     for (int i = 0; i < Cara::vaos.size(); i++)
-        if (Cara::vaos.at(i) == vao)
+        if (Cara::vaos.at(i).get_id() == vao)
             return i;    
     return -1;
 }
@@ -70,7 +69,7 @@ void Cara::rm_vaos(int start, int end) {
 void Cara::dbg_vaos() {
     std::cout << "`Cara::vaos`: ";
     for (int i = 0; i < Cara::vaos.size(); i++) {
-        std::cout << Cara::vaos.at(i) << (((i +1) == Cara::vaos.size())? "" : ", ");
+        std::cout << Cara::vaos.at(i).get_id() << (((i +1) == Cara::vaos.size())? "" : ", ");
     }
     std::cout << std::endl;
 }
@@ -91,22 +90,22 @@ void Cara::set_default_drawFN(drawFN* dfn) {
     Cara::default_drawFN = dfn;
 }
 
-void Cara::init() {
+void Cara::init(std::vector<unsigned char>* bytecode) {
     Cara::vaos = {};
     Cara::drawFNs = {};
     Cara::default_drawFN = nullptr;
-
+    CaraVM::bytecode = bytecode;
 }
-void Cara::init_verbose() {
+void Cara::init_verbose(std::vector<unsigned char>*) {
     std::cerr << "Error; Verbose Initialization not yet implemented." << std::endl;
     exit(-1);
 }
 
 void Cara::draw() {
-
+    
     for (int i = 0; i < Cara::vaos.size(); i++) {
 
-        glBindVertexArray(Cara::vaos.at(i));
+        glBindVertexArray(Cara::vaos.at(i).get_id());
         
         if (Cara::drawFNs.at(i) != nullptr)
             (*(Cara::drawFNs.at(i)))();
@@ -118,6 +117,12 @@ void Cara::draw() {
     }
 
 }
+
+
+void Cara::start() {
+    
+}
+
 
 Cara::Cara() {
     exit(-1);

@@ -8,14 +8,15 @@
 #include <functional>
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <GLFW/glfw3.h> 
 
 #ifndef __CARA_HPP__
 #define __CARA_HPP__
 
+#include "cvm.hpp"
 #include "objects.hpp"
 #include "fdefs.h"
 
-typedef std::function<void()> drawFN;
 
 class Cara {
 public:
@@ -24,8 +25,10 @@ public:
      * Initializes Static Context
      * 
      * */
-    STVD init();
-    STVD init_verbose();
+    STVD init(std::vector<unsigned char>*);
+    STVD init_verbose(std::vector<unsigned char>*);
+
+    STVD start();
 
     //sets default draw function
     STVD set_default_drawFN(drawFN*);
@@ -53,11 +56,7 @@ public:
     STVD draw();
 
     STVD dbg_vaos();
-    STVD add_vao(GLuint);
-    STVD add_vao(GLuint, drawFN*);
-    STVD add_vaos(int, GLuint*);
-    STVD add_vaos(int, GLuint*, drawFN**);
-    STVD add_vaos(CNSTVEC(Vao)&);
+    
     STVD dbg();
 
 private:
@@ -66,7 +65,7 @@ private:
      * Collection of the VAOs of the static context.
      *
      * */
-    STVEC(GLuint) vaos;
+    STVEC(Vao) vaos;
 
     /*
      *

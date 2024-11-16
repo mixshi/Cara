@@ -9,17 +9,16 @@
 
 #ifndef __OBJECTS_HPP__
 #define __OBJECTS_HPP__
-#define DOG DataObjectGroup
 
 #include "fdefs.h"
-
-template <typename T>
-
 //VAO
 class Vao {
 private:
     GLuint id;
 public:
+    inline GLuint get_id() {
+        return this->id; 
+    }
     void bind();
     STVAO gen();
     STVEC(Vao) gen(int);
@@ -35,15 +34,30 @@ class Vbo {
 private:
     GLuint id;
 public:
-    void bind();
-    void data(int, void*, GLenum);
+    inline GLuint get_id() {
+        return this->id;
+    }
+    inline void bind() {
+        glBindBuffer(GL_ARRAY_BUFFER, this -> id);
+    }
+    inline void data(int size, void* data, GLenum type) {
+        glBufferData (
+            GL_ARRAY_BUFFER,
+            size,
+            data,
+            type
+        );
+    }
+    void data(CNSTVEC(char)&, GLenum);
+    void data(CNSTVEC(ushort)&, GLenum);
+    void data(CNSTVEC(uint)&, GLenum);
+
     STVBO gen();
     STVEC(Vbo) gen(int);
 
     Vbo() : id(0) {}
     Vbo(GLuint id) : id(id) {}
     ~Vbo() {}
-
 };
 
 //IBO
@@ -51,10 +65,24 @@ class Ibo {
 private:
     GLuint id;
 public:
-    void bind();
-    void data(int, void*, GLenum);
+    inline GLuint get_id() {
+        return this->id;
+    }
+    inline void bind() {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this -> id);
+    }
+    inline void data(int size, void* data, GLenum type) {
+        glBufferData (
+            GL_ELEMENT_ARRAY_BUFFER,
+            size,
+            data,
+            type
+        );
+    }
+    void data(CNSTVEC(char)&, GLenum);
     void data(CNSTVEC(ushort)&, GLenum);
     void data(CNSTVEC(uint)&, GLenum);
+    
     STIBO gen();
     STVEC(Ibo) gen(int);
 
