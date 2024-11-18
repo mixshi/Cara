@@ -10,8 +10,8 @@
 #include <GL/gl.h>
 #include <GLFW/glfw3.h> 
 
-#ifndef __CARA_HPP__
-#define __CARA_HPP__
+#ifndef __CARA__
+#define __CARA__
 
 #include "cvm.hpp"
 #include "objects.hpp"
@@ -25,8 +25,8 @@ public:
      * Initializes Static Context
      * 
      * */
-    STVD init(std::vector<unsigned char>*);
-    STVD init_verbose(std::vector<unsigned char>*);
+    STVD init(const char*);
+    STVD init_verbose(const char*);
 
     STVD start();
 

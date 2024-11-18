@@ -28,8 +28,6 @@ std::vector<Vao> Vao::gen(int n) {
 /*
  * Vertex Buffer Object
  * */
-
-
 Vbo Vbo::gen() {
     GLuint id;
     glGenBuffers(1, &id);
@@ -79,8 +77,6 @@ void Vbo::data(CNSTVEC(uint)& vec, GLenum type) {
 /*
  * Index Buffer Object
  * */
-
-
 Ibo Ibo::gen() {
     GLuint id;
     glGenBuffers(1, &id);

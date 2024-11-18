@@ -2,12 +2,15 @@
 #include "cara.hpp"
 
 std::vector<Vao> 
+    
     Cara::vaos;
 
 drawFN* 
+    
     Cara::default_drawFN;
 
 std::vector<drawFN*> 
+    
     Cara::drawFNs;
 
 void Cara::add_vao(GLuint vao) {
@@ -90,13 +93,13 @@ void Cara::set_default_drawFN(drawFN* dfn) {
     Cara::default_drawFN = dfn;
 }
 
-void Cara::init(std::vector<unsigned char>* bytecode) {
+void Cara::init(const char* path) {
     Cara::vaos = {};
     Cara::drawFNs = {};
     Cara::default_drawFN = nullptr;
-    CaraVM::bytecode = bytecode;
+    CaraVM::ifs = new std::ifstream(path);
 }
-void Cara::init_verbose(std::vector<unsigned char>*) {
+void Cara::init_verbose(const char*) {
     std::cerr << "Error; Verbose Initialization not yet implemented." << std::endl;
     exit(-1);
 }
@@ -120,7 +123,7 @@ void Cara::draw() {
 
 
 void Cara::start() {
-    
+    CaraVM::start();
 }
 
 

@@ -162,5 +162,11 @@ CMakeFiles/run.dir/cara/src/main.cpp.o: \
  /usr/include/bits/stdint-least.h /usr/include/GL/glu.h \
  /usr/include/GL/gl.h /usr/include/GLFW/glfw3.h \
  /home/james/projects/Cara/cara/src/cvm.hpp \
+ /usr/include/c++/14.2.1/fstream /usr/include/c++/14.2.1/bits/codecvt.h \
+ /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
+ /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
+ /usr/include/c++/14.2.1/bits/fstream.tcc \
+ /home/james/projects/Cara/cara/src/vmdefs.h \
+ /home/james/projects/Cara/cara/src/instrs.h \
  /home/james/projects/Cara/cara/src/fdefs.h \
  /home/james/projects/Cara/cara/src/objects.hpp

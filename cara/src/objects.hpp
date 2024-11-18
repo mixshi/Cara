@@ -7,8 +7,8 @@
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 
-#ifndef __OBJECTS_HPP__
-#define __OBJECTS_HPP__
+#ifndef __OBJECTS__
+#define __OBJECTS__
 
 #include "fdefs.h"
 //VAO
