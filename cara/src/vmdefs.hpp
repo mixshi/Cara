@@ -2,8 +2,8 @@
     Virtual Machine Definitions
 */
 
-#ifndef __VMDEFS_H__
-#define __VMDEFS_H__
+#ifndef __VMDEFS_HPP__
+#define __VMDEFS_HPP__
 
 #ifndef __FUNCTIONAL__
 #define __FUNCTIONAL__

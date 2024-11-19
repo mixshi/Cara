@@ -74,7 +74,7 @@ void Instrs::_COPY(BCI& bci) { //0x4
 
     if (length) {
         for (int i = 0; i < length; i++) {
-
+            
         }
     }
 

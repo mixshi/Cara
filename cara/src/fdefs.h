@@ -8,22 +8,22 @@
 #ifndef __FDEFS_H__
 #define __FDEFS_H__
 
-#define STVD static void
-#define STLONG static long int
-#define STLLONG static long long int
-#define STULONG static unsigned long int
-#define STULLONG static unsigned long long int
-#define STINT static int
-#define STUINT static unsigned int
-#define STSHORT static short
-#define STUSHORT static unsigned short
-#define STCHAR static char
-#define STCNSTCHAR static const char
-#define STUCHAR static unsigned char
-#define STBYTE static unsigned char
-//lol
-#define STCNSTXPRUCHAR static constexpr unsigned char
-#define STBOOL static bool
+    #define STVD static void
+    #define STLONG static long int
+    #define STLLONG static long long int
+    #define STULONG static unsigned long int
+    #define STULLONG static unsigned long long int
+    #define STINT static int
+    #define STUINT static unsigned int
+    #define STSHORT static short
+    #define STUSHORT static unsigned short
+    #define STCHAR static char
+    #define STCNSTCHAR static const char
+    #define STUCHAR static unsigned char
+    #define STBYTE static unsigned char
+    //lol
+    #define STCNSTXPRUCHAR static constexpr unsigned char
+    #define STBOOL static bool
 
 #endif
 
@@ -109,7 +109,7 @@
     #define CNSTFS static std::fstream
 #endif /* FSTR_DEFS */
 
-#if !defined(VMFDEFS) && defined(__VMDEFS_H__)
+#if !defined(VMFDEFS) && defined(__VMDEFS_HPP__)
     #define  VMFDEFS
 
     #define BCI ByteCodeIter

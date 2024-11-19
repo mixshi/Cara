@@ -28,8 +28,8 @@
 #error "LEN_REF_BUFS is too small."
 #endif
 
-#include "vmdefs.h"
 #include "fdefs.h"
+#include "vmdefs.hpp"
 #include "panic.h"
 
 class CaraVM {

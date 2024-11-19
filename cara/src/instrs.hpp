@@ -2,7 +2,7 @@
 #define __INSTRS_HPP__
 
 #include "cvm.hpp"
-#include "vmdefs.h"
+#include "vmdefs.hpp"
 #include "fdefs.h"
 #include "panic.h"
 
