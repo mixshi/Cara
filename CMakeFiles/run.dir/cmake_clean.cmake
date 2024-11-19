@@ -4,6 +4,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/run.dir/cara/src/cara.cpp.o.d"
   "CMakeFiles/run.dir/cara/src/cvm.cpp.o"
   "CMakeFiles/run.dir/cara/src/cvm.cpp.o.d"
+  "CMakeFiles/run.dir/cara/src/instrs.cpp.o"
+  "CMakeFiles/run.dir/cara/src/instrs.cpp.o.d"
   "CMakeFiles/run.dir/cara/src/main.cpp.o"
   "CMakeFiles/run.dir/cara/src/main.cpp.o.d"
   "CMakeFiles/run.dir/cara/src/objects.cpp.o"

@@ -1,4 +1,3 @@
-
 /*
     Virtual Machine Definitions
 */
@@ -6,6 +5,12 @@
 #ifndef __VMDEFS_H__
 #define __VMDEFS_H__
 
+#ifndef __FUNCTIONAL__
+#define __FUNCTIONAL__
+#include <functional>
+#endif
+
+#include "fdefs.h"
 
 #define FIRST_1  0b0000000000000001
 #define FIRST_2  0b0000000000000011
@@ -28,20 +33,68 @@
 
 
 class ByteCodeIter {
-private:
-    std::function<char()>* _peek;
-    std::function<char()>* _get;
 public:
-    char peek() {
+    std::function<byte()>* _peek;
+    std::function<byte()>* _get;
+    byte peek() {
         return (*_peek)();
     }
-    char get() {
+    byte get() {
         return (*_get)();
     }
 
+
+    /* * pull_x
+     *
+     * Pulls a number from self
+     *
+     * - NOTE: Multiple Macro Expansions from "fdefs.h"
+     *
+     * */
+    
+    inline short pull_s () {
+
+        return (ushort)((get() << 8) | get());
+
+    }
+    inline uint pull(){
+
+        return (uint)((get() << 24) | (get() << 16) | (get() << 8) | get());
+
+    }
+    ul pull_l () {
+
+        ul ret = 0;
+        ul buf;
+
+        for (byte i = 0; i < sizeof(ul); i++) {
+            buf = get();
+            buf <<= i * 8;
+            ret |= buf;
+        }
+
+        return ret;
+    }
+
+    ull pull_ll() {
+        
+        ull ret = 0;
+        ull buf;
+
+        for (byte i = 0; i < sizeof(ull); i++) {
+            buf = get();
+            buf <<= i * 8;
+            ret |= buf;
+        }
+
+        return ret;
+
+    }
+
+
     ByteCodeIter (
-        std::function<char()>* peek,
-        std::function<char()>* get
+        std::function<byte()>* peek,
+        std::function<byte()>* get
     ) : 
     _peek(peek),
     _get(get)
@@ -50,7 +103,5 @@ public:
 
 };
 
-#ifndef __INSTRS_H__
-#include "instrs.h"
-#endif
+#include "instrs.hpp"
 #endif

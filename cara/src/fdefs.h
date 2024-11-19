@@ -1,19 +1,31 @@
 
 /*
     Function Definitions
+
+    -- Implemented on an "as needed" basis --
 */
 
+#ifndef __FDEFS_H__
+#define __FDEFS_H__
+
 #define STVD static void
-#define STLONG static long
-#define STULONG static unsigned long
+#define STLONG static long int
+#define STLLONG static long long int
+#define STULONG static unsigned long int
+#define STULLONG static unsigned long long int
 #define STINT static int
 #define STUINT static unsigned int
 #define STSHORT static short
 #define STUSHORT static unsigned short
 #define STCHAR static char
+#define STCNSTCHAR static const char
 #define STUCHAR static unsigned char
+#define STBYTE static unsigned char
+//lol
 #define STCNSTXPRUCHAR static constexpr unsigned char
 #define STBOOL static bool
+
+#endif
 
 #ifndef TYPES
     #define TYPES
@@ -22,6 +34,8 @@
     typedef unsigned long int ul;
     typedef unsigned int uint;
     typedef unsigned short int ushort;
+    typedef unsigned char uchar;
+    typedef unsigned char byte;
 #endif /* TYPES */
 
 #if !defined(GL_DEFS) && defined(__GLEW_H__) && defined(__GL_H__)
@@ -102,4 +116,4 @@
     #define STBCI static ByteCodeIter
     #define CNSTBCI const ByteCodeIter
     #define STCNSTBCI static const ByteCodeIter
-#endif
+#endif /* VMFDEFS */

@@ -16,6 +16,7 @@
 #include "cvm.hpp"
 #include "objects.hpp"
 #include "fdefs.h"
+#include "instrs.hpp"
 
 
 class Cara {

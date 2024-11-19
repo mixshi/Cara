@@ -160,5 +160,6 @@ CMakeFiles/run.dir/cara/src/cvm.cpp.o: \
  /usr/include/c++/14.2.1/bits/fstream.tcc \
  /usr/include/c++/14.2.1/iostream \
  /home/james/projects/Cara/cara/src/vmdefs.h \
- /home/james/projects/Cara/cara/src/instrs.h \
- /home/james/projects/Cara/cara/src/fdefs.h
+ /home/james/projects/Cara/cara/src/fdefs.h \
+ /home/james/projects/Cara/cara/src/instrs.hpp \
+ /home/james/projects/Cara/cara/src/panic.h

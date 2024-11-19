@@ -1,6 +1,7 @@
 
 #include "cara.hpp"
 
+
 std::vector<Vao> 
     
     Cara::vaos;
@@ -94,14 +95,16 @@ void Cara::set_default_drawFN(drawFN* dfn) {
 }
 
 void Cara::init(const char* path) {
+    panic_unimplemented("Cara::init(const char*)");
+
     Cara::vaos = {};
     Cara::drawFNs = {};
     Cara::default_drawFN = nullptr;
+    CaraVM::path = (char*)path;
     CaraVM::ifs = new std::ifstream(path);
 }
 void Cara::init_verbose(const char*) {
-    std::cerr << "Error; Verbose Initialization not yet implemented." << std::endl;
-    exit(-1);
+    panic_unimplemented("Cara::init_verbose(const char*)");    
 }
 
 void Cara::draw() {

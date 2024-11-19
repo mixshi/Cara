@@ -1,54 +1,100 @@
 #include "cvm.hpp"
 
 std::ifstream* CaraVM::ifs = nullptr;
-char* CaraVM::error_msg = nullptr;
+
+char* CaraVM::path = nullptr;
+
 bool CaraVM::error = false; 
-unsigned char** CaraVM::refbufs;
-unsigned char CaraVM::refbytes = 0;
+
+char const** CaraVM::error_msg;
+
+byte** CaraVM::refbufs;
+
+byte* CaraVM::program_data;
+
+byte CaraVM::refbytes = 0;
+
 unsigned long int CaraVM::instrct = 0;
 
-// char* CaraVM::refbufs[3] = {nullptr, nullptr, nullptr};
-
-unsigned char CaraVM::take() {
-    if (CaraVM::ifs->peek() == -1) {
-        CaraVM::error = (char*)"EOF";
-        std::cout << CaraVM::error;
-        return -1;
+static std::function<byte()> ifs_peek = []() -> byte {
+    if (!CaraVM::ifs->good()) {
+        CaraVM::error = true;
+        CaraVM::error_msg = &prematureEOF;   
     }
-    return (unsigned char)(CaraVM::ifs->get() &FIRST_8);
-}
-// STUSHORT CaraVM::take2();
-// STUINT CaraVM::take3();
-// STUINT CaraVM::take4();
-// STVEC(unsigned char) CaraVM::take(int);
+    return CaraVM::ifs->peek();
+}; 
 
+static std::function<byte()> ifs_get = []() -> byte {
+    if (!CaraVM::ifs->good()) {
+        CaraVM::error = true;
+        CaraVM::error_msg = &prematureEOF;   
+    }
+    return CaraVM::ifs->get();
+};
+
+BCI CaraVM::bci() {
+    return ByteCodeIter (
+        &ifs_peek,
+        &ifs_get
+    );
+}
 
 void CaraVM::start() {
+    panic_unimplemented("CaraVM::start()");
+    
     if (!CaraVM::ifs || CaraVM::ifs->fail() || !CaraVM::ifs->good()) {
-        std::cerr << "Error Error Error Error Error Error Error" << std::endl;
-        exit(-1);
+        panic_ifs_failue(CaraVM::path);
     }
     CaraVM::init_refbufs();
 }
 
-void CaraVM::ldptr(unsigned char idx, BCI& bci) {
+byte* CaraVM::drefptr(byte idx) {
     if (CaraVM::error)
-        return;
+        return nullptr;
     if (idx > LEN_REF_BUFS) {
         CaraVM::error = true;
-        CaraVM::error_msg = (char*)"REFBUF IDX OUT OF BOUNDS";
-        return;
+        CaraVM::error_msg = &refidxOB;
+        return nullptr;
     }
-    
-    for (char i = 0; i < CaraVM::refbytes && !CaraVM::error; i++) {
-        CaraVM::refbufs[idx][i] = bci.get();
+
+    byte* ret = CaraVM::program_data;
+
+    for (byte i = CaraVM::refbytes -1, j = 0; i >= 0; i--, j++) {
+        ret += CaraVM::refbufs[idx][i] << j;
     }
+
+    if (ret == CaraVM::program_data)
+        panic_nullptr__deref();
+
+    return ret;
 }
 
+ull CaraVM::numerateptr(byte idx) {
+    if (CaraVM::error)
+        return -1;
+    if (idx > LEN_REF_BUFS) {
+        CaraVM::error = true;
+        CaraVM::error_msg = &refidxOB;
+        return -1;
+    }
+
+    ull ret = 0;
+
+    for (byte i = (CaraVM::refbytes <= sizeof(ull)? CaraVM::refbytes -1 : sizeof(ull) -1), j = 0; i >= 0; i--, j++) {
+        ret |= CaraVM::refbufs[idx][i] << j;
+    }
+
+    return ret;
+}
+
+void CaraVM::parse_opening_headers(BCI& bci) {
+    panic_unimplemented("CaraVM::parse_opening_headers(ByteCodeIter&)");
+} 
+
 void CaraVM::init_refbufs() {
-    CaraVM::refbufs = new unsigned char* [LEN_REF_BUFS];
+    CaraVM::refbufs = new byte* [LEN_REF_BUFS];
     for (int i = 0; i < LEN_REF_BUFS; i++) {
-        CaraVM::refbufs[i] = new unsigned char[CaraVM::refbytes];
+        CaraVM::refbufs[i] = new byte[CaraVM::refbytes];
     }
 }
 
