@@ -1,4 +1,4 @@
-#include "objects.hpp"
+#include "objects.h"
 
 /*
  * Vertex Array Object
@@ -47,7 +47,7 @@ std::vector<Vbo> Vbo::gen(int n) {
     return v;
 }
 
-void Vbo::data(CNSTVEC(char)& vec, GLenum type) {
+void Vbo::data(const std::vector<byte>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size(),
@@ -56,7 +56,7 @@ void Vbo::data(CNSTVEC(char)& vec, GLenum type) {
     );
 }
 
-void Vbo::data(CNSTVEC(ushort)& vec, GLenum type) {
+void Vbo::data(const std::vector<ushort>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(ushort),
@@ -65,7 +65,7 @@ void Vbo::data(CNSTVEC(ushort)& vec, GLenum type) {
     );
 }
 
-void Vbo::data(CNSTVEC(uint)& vec, GLenum type) {
+void Vbo::data(const std::vector<uint>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(uint),
@@ -96,7 +96,7 @@ std::vector<Ibo> Ibo::gen(int n) {
     return v;
 }
 
-void Ibo::data(CNSTVEC(char)& vec, GLenum type) {
+void Ibo::data(const std::vector<byte>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size(),
@@ -104,7 +104,7 @@ void Ibo::data(CNSTVEC(char)& vec, GLenum type) {
         type
     );
 }
-void Ibo::data(CNSTVEC(ushort)& vec, GLenum type) {
+void Ibo::data(const std::vector<ushort>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(ushort),
@@ -112,7 +112,7 @@ void Ibo::data(CNSTVEC(ushort)& vec, GLenum type) {
         type
     );
 }
-void Ibo::data(CNSTVEC(uint)& vec, GLenum type) {
+void Ibo::data(const std::vector<uint>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(uint),
@@ -124,23 +124,23 @@ void Ibo::data(CNSTVEC(uint)& vec, GLenum type) {
 /*
  * Data Object Group
  * */
-Vao DOG::get_vao() {
+Vao DataObjectGroup::get_vao() {
     return this -> vao;
 }
-Vbo DOG::get_vbo() {
+Vbo DataObjectGroup::get_vbo() {
     return this -> vbo;
 }
-Ibo DOG::get_ibo() {
+Ibo DataObjectGroup::get_ibo() {
     return this -> ibo;
 }
 
-void DOG::set_vao(Vao vao) {
+void DataObjectGroup::set_vao(Vao vao) {
     this->vao = vao;
 }
-void DOG::set_vbo(Vbo vbo) {
+void DataObjectGroup::set_vbo(Vbo vbo) {
     this->vbo = vbo;
 }
-void DOG::set_ibo(Ibo ibo) {
+void DataObjectGroup::set_ibo(Ibo ibo) {
     this->ibo = ibo;
 }
 

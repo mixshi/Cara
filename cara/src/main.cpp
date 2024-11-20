@@ -1,8 +1,13 @@
 
+
 #include <bitset>
 #include <iostream>
+#include "defs.h"
 
-#include "cara.hpp"
+#include "cara.h"
+
+
+
 int main(void) {
 
 

@@ -1,4 +1,4 @@
-#include "cvm.hpp"
+#include "cvm.h"
 
 std::ifstream* CaraVM::ifs = nullptr;
 
@@ -69,23 +69,25 @@ byte* CaraVM::drefptr(byte idx) {
     return ret;
 }
 
-ull CaraVM::numerateptr(byte idx) {
-    if (CaraVM::error)
-        return -1;
-    if (idx > LEN_REF_BUFS) {
-        CaraVM::error = true;
-        CaraVM::error_msg = &refidxOB;
-        return -1;
-    }
+//FIXME: I don't remember writing this 3;
 
-    ull ret = 0;
+// unsigned long long CaraVM::numerateptr(byte idx) {
+//     if (CaraVM::error)
+//         return -1;
+//     if (idx > LEN_REF_BUFS) {
+//         CaraVM::error = true;
+//         CaraVM::error_msg = &refidxOB;
+//         return -1;
+//     }
 
-    for (byte i = (CaraVM::refbytes <= sizeof(ull)? CaraVM::refbytes -1 : sizeof(ull) -1), j = 0; i >= 0; i--, j++) {
-        ret |= CaraVM::refbufs[idx][i] << j;
-    }
+//     ull ret = 0;
 
-    return ret;
-}
+//     for (byte i = (CaraVM::refbytes <= sizeof(ull)? CaraVM::refbytes -1 : sizeof(ull) -1), j = 0; i >= 0; i--, j++) {
+//         ret |= CaraVM::refbufs[idx][i] << j;
+//     }
+
+//     return ret;
+// }
 
 void CaraVM::parse_opening_headers(BCI& bci) {
     panic_unimplemented("CaraVM::parse_opening_headers(ByteCodeIter&)");

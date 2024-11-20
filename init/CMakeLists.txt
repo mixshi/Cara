@@ -11,7 +11,6 @@ find_package(GLEW REQUIRED)
 
 set(SRC_DIR $(CMAKE_CURRENT_SOURCE_DIR)/../cara/src)
 
-# For testing new features
 add_executable( run
     ${SRC_DIR}/main.cpp 
 
@@ -22,10 +21,9 @@ add_executable( run
 )
 
 
-# For testing all features
-add_executable( _test 
-    ${SRC_DIR}/tests.cpp 
-)
+# add_executable( _test 
+#     ${SRC_DIR}/tests.cpp 
+# )
 
 target_link_libraries(run glfw OpenGL::GL GLEW::GLEW)
 # target_link_libraries(_test glfw OpenGL::GL GLEW::GLEW)

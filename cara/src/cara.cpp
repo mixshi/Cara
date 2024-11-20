@@ -1,5 +1,5 @@
 
-#include "cara.hpp"
+#include "cara.h"
 
 
 std::vector<Vao> 
@@ -50,7 +50,7 @@ void Cara::add_vaos(int vaoc, GLuint* vao, drawFN** dfns) {
     }
 }
 
-void Cara::add_vaos(CNSTVEC(Vao)& vaos) {
+void Cara::add_vaos(const std::vector<Vao>& vaos) {
     Cara::vaos.insert(Cara::vaos.end(), vaos.begin(), vaos.end());
 }
 

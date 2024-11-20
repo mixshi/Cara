@@ -1,4 +1,4 @@
-#include "instrs.hpp" 
+#include "instrs.h" 
 
 
 
@@ -14,11 +14,9 @@ void Instrs::_LOAD (BCI& bci) { //0x1
             ptr[i] = bci.get();
         }
     } else {
-        int i = 0;
-        while (bci.peek()) {
-            ptr[i] = bci.get();
-            i++;
-        }   
+        for (; bci.peek(); ptr++)
+            *ptr = bci.get();            
+        ptr[1] = 0;
     }
 }   
 
@@ -29,16 +27,14 @@ void Instrs::_LOADL (BCI& bci) { //0x2
 
     uint len = bci.pull();
 
-    uint i = 0;
     if (len) {
-        for (; i < len; i++) {
+        for (uint i = 0; i < len; i++) {
             ptr[i] = bci.get();
         }
     } else {
-        while (bci.peek()) {
-            ptr[i] = bci.get();
-            i++;
-        }
+        for (; bci.peek(); ptr++)
+            *ptr = bci.get();
+        ptr[1] = 0;
     }
 }
 
@@ -71,14 +67,17 @@ void Instrs::_COPY(BCI& bci) { //0x4
         return;
     }
 
+    byte* from = CaraVM::drefptr(target);
+    byte* to   = CaraVM::drefptr(target_2);
 
-    if (length) {
-        for (int i = 0; i < length; i++) {
-            
-        }
+    if (length) 
+        for (byte i = 0; i < length; i++, from++, to++) 
+            *to = *from;
+    else {
+        for (; *from; from++, to++) 
+            *to = *from;
     }
-
-
+    
 }
 
 
