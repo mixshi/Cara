@@ -1,106 +1,103 @@
-#include "instrs.h" 
+#include "instrs.h"
 
 
-
-void Instrs::_LOAD (BCI& bci) { //0x1
-    if (CaraVM::error)
-        return;
-    byte* ptr = CaraVM::drefptr(0);
-
-    byte len = bci.get();
-
-    if (len) {
-        for (byte i = 0; i < len; i++) {
-            ptr[i] = bci.get();
-        }
-    } else {
-        for (; bci.peek(); ptr++)
-            *ptr = bci.get();            
-        ptr[1] = 0;
-    }
-}   
-
-void Instrs::_LOADL (BCI& bci) { //0x2
-    if (CaraVM::error)
-        return;
-    byte* ptr = CaraVM::drefptr(0);
-
-    uint len = bci.pull();
-
-    if (len) {
-        for (uint i = 0; i < len; i++) {
-            ptr[i] = bci.get();
-        }
-    } else {
-        for (; bci.peek(); ptr++)
-            *ptr = bci.get();
-        ptr[1] = 0;
-    }
+// Loads data from mem to some register
+void Instrs::_LD(BCI& bci) {
+	Pointer_t ptr = bci.pull_ptr();	
+	
+	CVM::drefptr(ptr, bci.get());
 }
 
-void Instrs::_LOADPTR(BCI& bci) { //0x3
-    if (CaraVM::error)
-        return;
-
+void Instrs::_ST(BCI& bci) {
     byte target = bci.get();
-    if (target >= LEN_REF_BUFS) {
-        CaraVM::error = true;
-        CaraVM::error_msg = &refidxOB;
-        return;
-    }
+    byte* memref = CVM::refptr(bci.pull_ptr());
+
+    ushort sz = CVM::bufs.at(target).size(); 
+
+	for (byte i = 0; i < sz; i++, memref++) {
+			CVM::bufs.at(target).at(i) = *memref;
+	}
+
+}
+
+void Instrs::_LDI(BCI& bci) {
+    Pointer_t ptr = bci.pull_ptr();
+
+
+}
+
+void Instrs::_STI(BCI& bci){
+
+}
+
+void Instrs::_LDR(BCI& bci) {
+
+}
+
+void Instrs::_STR(BCI& bci) {
+
+}
+
+void Instrs::_LEA(BCI& bci){
+
+}
+
+void Instrs::_JMP(BCI& bci) {
+
+}
+
+void Instrs::_CLR(BCI& bci) {
+    byte target = bci.get();
+	CVM::bufs.at(target).clear();
+}
+
+void Instrs::_FLL(BCI& bci) {
+    byte target = bci.get();
+    byte filler = bci.get();
+	byte size   = bci.get();
+
+	for (byte i = 0; i < size; i++) 
+		CVM::bufs.at(target).push_back(filler);
+}
+
+void Instrs::_ADD(BCI& bci) {
+    byte addend_1 = bci.get();
+	byte addend_2 = bci.get();
+
+}
+
+void Instrs::_MUL(BCI& bci){
+    byte multiplicand_1 = bci.get();
+	byte multiplicand_2 = bci.get();
+
+}
+
+void Instrs::_DIV(BCI& bci) {
+    byte dividand_1 = bci.get();
+	byte dividand_2 = bci.get();
     
-    for (byte i = 0; i < CaraVM::refbytes && !CaraVM::error; i++) {
-        CaraVM::refbufs[target][i] = bci.get();
-    }
-}
-
-void Instrs::_COPY(BCI& bci) { //0x4
-    if (CaraVM::error)
-        return;
-    byte target = bci.get();
-    byte target_2 = bci.get();
-    byte length = bci.get();
-
-    if (target >= LEN_REF_BUFS || target_2 >= LEN_REF_BUFS) {
-        CaraVM::error = true;
-        CaraVM::error_msg = &refidxOB;
-        return;
-    }
-
-    byte* from = CaraVM::drefptr(target);
-    byte* to   = CaraVM::drefptr(target_2);
-
-    if (length) 
-        for (byte i = 0; i < length; i++, from++, to++) 
-            *to = *from;
-    else {
-        for (; *from; from++, to++) 
-            *to = *from;
-    }
-    
-}
-
-
-void Instrs::_RELOADPTR(BCI& bci) {
-    byte target = bci.get();
-    byte target_2 = bci.get();
-
-    if (target >= LEN_REF_BUFS || target_2 >= LEN_REF_BUFS) {
-        CaraVM::error = true;
-        CaraVM::error_msg = &refidxOB;
-        return;
-    }
-
-    byte* ref = CaraVM::drefptr(target);
-
-
-    for (byte i = 0; i < CaraVM::refbytes; i++, ref++) {
-        CaraVM::refbufs[target_2][i] = *ref;
-    }
+	{
+		bool fail = true;
+		for (byte i = 0; i < CVM::bufs.at(dividand_2).size(); i++) {
+			if (CVM::bufs.at(dividand_2).at(i) != 0) fail == false;
+		}
+	    
+		if (fail) {
+		    const char** err = new const char*("Attempted to divide by 0");
+		    CVM::error = true;
+			CVM::error_msg = err;
+		    panic(*err);
+		}
+	}
 
 }
 
+void Instrs::_TRAP(BCI& bci) {
+		panic_unimplemented("amogus");
 
-void Instrs::_EXIT (BCI& bci) { 
-    exit((bci.get() << 24) | (bci.get() << 16) | (bci.get() << 8) || bci.get()); 
 }
+
+void Instrs::_EXIT(BCI& bci) {
+}
+
+

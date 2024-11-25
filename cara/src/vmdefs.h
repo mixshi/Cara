@@ -7,10 +7,7 @@
 #define __VMDEFS_H__
 
 
-#ifndef __FUNCTIONAL__
-#define __FUNCTIONAL__
 #include <functional>
-#endif
 
 #define FIRST_1  0b0000000000000001
 #define FIRST_2  0b0000000000000011
@@ -29,20 +26,21 @@
 #define FIRST_15 0b0111111111111111
 #define FIRST_16 0b1111111111111111
 
-
-
-
-class ByteCodeIter {
+typedef class ByteCodeIter {
 public:
-    std::function<byte()>* _peek;
-    std::function<byte()>* _get;
+    byte (*_peek)();
+    byte (*_get)();
+    bool (*_good)();
+
     byte peek() {
         return (*_peek)();
     }
     byte get() {
         return (*_get)();
     }
-
+    bool good() {
+        return (*_good)();
+    }
 
     /* * pull_x
      *
@@ -52,12 +50,12 @@ public:
      *
      * */
     
-    inline short pull_s () {
+    short pull_s () {
 
         return (ushort)((get() << 8) | get());
 
     }
-    inline uint pull(){
+    uint pull(){
 
         return (uint)((get() << 24) | (get() << 16) | (get() << 8) | get());
 
@@ -91,17 +89,24 @@ public:
 
     }
 
+    Pointer_t pull_ptr() {
+		char ret[sizeof(Pointer_t)];
+
+		for (byte i = 0; i < sizeof(Pointer_t); i++)
+			ret[i] = get();
+		return *((Pointer_t*)ret);
+	}
 
     ByteCodeIter (
-        std::function<byte()>* peek,
-        std::function<byte()>* get
+        byte (*peek)(),
+        byte (*get)(),
+        bool (*good)()
     ) : 
     _peek(peek),
-    _get(get)
-
+    _get(get),
+    _good(good)
     {}
 
-};
+} BCI;
 
-#include "instrs.h"
 #endif

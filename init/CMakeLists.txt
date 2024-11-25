@@ -25,6 +25,8 @@ add_executable( run
 #     ${SRC_DIR}/tests.cpp 
 # )
 
+# TODO: implement tests dummy!
+
 target_link_libraries(run glfw OpenGL::GL GLEW::GLEW)
 # target_link_libraries(_test glfw OpenGL::GL GLEW::GLEW)
 

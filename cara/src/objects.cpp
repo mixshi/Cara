@@ -3,21 +3,20 @@
 /*
  * Vertex Array Object
  * */
-
-Vao Vao::gen() {
+VAO VAO::gen() {
     GLuint id;
     glGenVertexArrays(1, &id);
     return Vao(id);
 }
 
-std::vector<Vao> Vao::gen(int n) {
-    std::vector<Vao> v(n +1);
+std::vector<VAO> VAO::gen(int n) {
+    std::vector<VAO> v(n +1);
     GLuint* ids = new GLuint[n];
     
     glGenVertexArrays(n, ids);
 
     for (int i = 0; i < n; i++)
-        v.push_back(Vao(ids[i]));
+        v.push_back(VAO(ids[i]));
 
     delete[] ids;
     return v;
@@ -28,26 +27,26 @@ std::vector<Vao> Vao::gen(int n) {
 /*
  * Vertex Buffer Object
  * */
-Vbo Vbo::gen() {
+VBO VBO::gen() {
     GLuint id;
     glGenBuffers(1, &id);
-    return Vbo(id);
+    return VBO(id);
 }
 
-std::vector<Vbo> Vbo::gen(int n) {
-    std::vector<Vbo> v(n +1);
+std::vector<VBO> VBO::gen(int n) {
+    std::vector<VBO> v(n +1);
     GLuint* ids = new GLuint[n];
     
     glGenBuffers(n, ids);
 
     for (int i = 0; i < n; i++)
-        v.push_back(Vbo(ids[i]));
+        v.push_back(VBO(ids[i]));
 
     delete[] ids;
     return v;
 }
 
-void Vbo::data(const std::vector<byte>& vec, GLenum type) {
+void VBO::data(const std::vector<byte>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size(),
@@ -56,7 +55,7 @@ void Vbo::data(const std::vector<byte>& vec, GLenum type) {
     );
 }
 
-void Vbo::data(const std::vector<ushort>& vec, GLenum type) {
+void VBO::data(const std::vector<ushort>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(ushort),
@@ -65,7 +64,7 @@ void Vbo::data(const std::vector<ushort>& vec, GLenum type) {
     );
 }
 
-void Vbo::data(const std::vector<uint>& vec, GLenum type) {
+void VBO::data(const std::vector<uint>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(uint),
@@ -77,26 +76,26 @@ void Vbo::data(const std::vector<uint>& vec, GLenum type) {
 /*
  * Index Buffer Object
  * */
-Ibo Ibo::gen() {
+IBO IBO::gen() {
     GLuint id;
     glGenBuffers(1, &id);
-    return Ibo(id);
+    return IBO(id);
 }
 
-std::vector<Ibo> Ibo::gen(int n) {
-    std::vector<Ibo> v(n +1);
+std::vector<IBO> IBO::gen(int n) {
+    std::vector<IBO> v(n +1);
     GLuint* ids = new GLuint[n];
     
     glGenBuffers(n, ids);
 
     for (int i = 0; i < n; i++)
-        v.push_back(Ibo(ids[i]));
+        v.push_back(IBO(ids[i]));
 
     delete[] ids;
     return v;
 }
 
-void Ibo::data(const std::vector<byte>& vec, GLenum type) {
+void IBO::data(const std::vector<byte>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size(),
@@ -104,7 +103,7 @@ void Ibo::data(const std::vector<byte>& vec, GLenum type) {
         type
     );
 }
-void Ibo::data(const std::vector<ushort>& vec, GLenum type) {
+void IBO::data(const std::vector<ushort>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(ushort),
@@ -112,7 +111,7 @@ void Ibo::data(const std::vector<ushort>& vec, GLenum type) {
         type
     );
 }
-void Ibo::data(const std::vector<uint>& vec, GLenum type) {
+void IBO::data(const std::vector<uint>& vec, GLenum type) {
     glBufferData(
         GL_ARRAY_BUFFER,
         vec.size() *sizeof(uint),
@@ -124,23 +123,23 @@ void Ibo::data(const std::vector<uint>& vec, GLenum type) {
 /*
  * Data Object Group
  * */
-Vao DataObjectGroup::get_vao() {
+VAO DOG::get_vao() {
     return this -> vao;
 }
-Vbo DataObjectGroup::get_vbo() {
+VBO DOG::get_vbo() {
     return this -> vbo;
 }
-Ibo DataObjectGroup::get_ibo() {
+IBO DOG::get_ibo() {
     return this -> ibo;
 }
 
-void DataObjectGroup::set_vao(Vao vao) {
+void DOG::set_vao(Vao vao) {
     this->vao = vao;
 }
-void DataObjectGroup::set_vbo(Vbo vbo) {
+void DOG::set_vbo(Vbo vbo) {
     this->vbo = vbo;
 }
-void DataObjectGroup::set_ibo(Ibo ibo) {
+void DOG::set_ibo(Ibo ibo) {
     this->ibo = ibo;
 }
 

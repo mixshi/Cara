@@ -6,41 +6,70 @@
 #include "defs.h"
 #include "panic.h"
 
-#define LOAD      0x1
-#define LOADL     0x2
-#define LOADPTR   0x3
+enum opcode {
 
-#define COPY      0x4
-#define COPYL     0x5
-#define RELOADPTR 0x6
+		LD = 0, // mem --[]-> reg
+		ST,     // reg --[]-> mem
+				//
+				// Load / Store data to / from memory
+		
+		LDI, // mem       --[Dereference]-> reg | buf
+		STI, // reg | buf --[Dereference]-> mem
+			 //
+			 // Load / Store data indirectly to / from memory
+			 
+		JMP, // set CMV::PP
+			 //
+			 // Jump to positions
 
-#define TRAP 0x50
+		CLR, // Clear content of a buf
+		FLL, // Fill content of a buf 
+		     //
+			 // Manage bufs 
+		
+			 // ------------------------------
+		ADD, // reg --[Addition]-> reg
+    		 //
+			 // Addition 
+			 //              
+		MUL, // reg --[Multiplication]-> reg
+		DIV, // reg --[Divison]-> reg
+			 //
+			 // Multiply / Divide
+			 // ------------------------------
 
-#define EXIT    0xFF
+		TRAP = 0x50, // exec complex functionality
+				     //
+		PHSE = 0x75, // Switch to different program phase
+				     //
+		EXIT = 0xFF  // exit program
+					 //
+};					 // misc
+
 
 class Instrs {
-public:
-    static void _LOAD      (BCI&); //load data from file
-    static void _LOADL     (BCI&); //load long data from file
-    static void _LOADPTR   (BCI&); //load pointer from file
-    
-    static void _COPY      (BCI&); //copy data from memory
-    static void _COPYL     (BCI&); //copy long data from memory
-    static void _RELOADPTR (BCI&); //load pointer from memory
+    static void _LD   (ByteCodeIter&);
+	static void _ST   (ByteCodeIter&);
+    static void _LDI  (ByteCodeIter&);
+	static void _STI  (ByteCodeIter&);
+	static void _LDR  (ByteCodeIter&);
+    static void _STR  (ByteCodeIter&);
+	static void _LEA  (ByteCodeIter&);
+	static void _JMP  (ByteCodeIter&);
+	static void _CLR  (ByteCodeIter&);
+	static void _FLL  (ByteCodeIter&);
+	static void _ADD  (ByteCodeIter&);
+	static void _MUL  (ByteCodeIter&);
+	static void _DIV  (ByteCodeIter&);
+										
+	static void _TRAP (ByteCodeIter&);
+	static void _PHSE (ByteCodeIter&);
+	static void _EXIT (ByteCodeIter&);
+private:	
+	Instrs() {}
+	~Instrs() {}
 
-    static void _TRAP      (BCI&); //Execute trap routine
-
-    static void _EXIT      (BCI&); //Exit the program
-
-    //static std::function<void(BCI&)>** context_declarative_instructions;
-
-    static std::vector<std::function<void(BCI&)>*> context_runtime_instructions;
-
-    //static std::function<void(BCI&)>** context_dispositional_instructions;
-
-
-private:
-    Instrs() {}
-    ~Instrs() {}
 };
+
+
 #endif

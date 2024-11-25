@@ -4,13 +4,14 @@
 
 #include <cstdlib>
 
-#ifndef __IOSTREAM__
-#define __IOSTREAM__
 #include <iostream>
-#endif
 
 static const char* refidxOB = "REFERENCE BUFFER INDEX OUT OF BOUNDS";
 static const char* prematureEOF = "Prematurely reached the EOF (end of file).";
+
+inline static void panic(const char* err) {
+		std::cerr << "Panicked :( error message: " << err << std::endl;
+}
 
 inline static void panic_unimplemented(const char* unimplemented_func) {
     
@@ -23,7 +24,7 @@ inline static void panic_ifs_failue(const char* path) {
     exit(-1);
 }
 
-inline static void panic_nullptr__deref() {
+inline static void panic_nullptr_deref() {
     std::cerr<< "Error, attempted to dereference a null pointer.";
     exit(-1);
 }

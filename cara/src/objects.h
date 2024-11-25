@@ -1,8 +1,4 @@
-#ifndef __VECTOR__
-#define __VECTOR__
 #include <vector>
-#endif
-
 #include "defs.h"
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -12,7 +8,7 @@
 #define __OBJECTS_H__
 
 //VAO
-class Vao {
+typedef class Vao {
 private:
     GLuint id;
 public:
@@ -27,10 +23,10 @@ public:
     Vao(GLuint id) : id(id) {}
     ~Vao() {}
 
-};
+} VAO;
 
 //VBO
-class Vbo {
+typedef class Vbo {
 private:
     GLuint id;
 public:
@@ -58,10 +54,10 @@ public:
     Vbo() : id(0) {}
     Vbo(GLuint id) : id(id) {}
     ~Vbo() {}
-};
+} VBO;
 
 //IBO
-class Ibo {
+typedef class Ibo {
 private:
     GLuint id;
 public:
@@ -89,42 +85,41 @@ public:
     Ibo() : id(0) {}
     Ibo(GLuint id) : id(id)  {}
     ~Ibo() {}
-};
+} IBO;
 
-class DataObjectGroup {
+typedef class DataObjectGroup {
 private:
-    Vao vao;
-    Vbo vbo;
-    Ibo ibo;
+    VAO vao;
+    VBO vbo;
+    IBO ibo;
 public:
     
     Vao get_vao();
     Vbo get_vbo();
     Ibo get_ibo();
 
-    void set_vao(Vao);
-    void set_vbo(Vbo);
-    void set_ibo(Ibo);
+    void set_vao(VAO);
+    void set_vbo(VBO);
+    void set_ibo(IBO);
 
     static DataObjectGroup gen();
     static std::vector<DataObjectGroup> gen(int);
 
     static void set_sizes(const std::vector<ushort>&);
     static void set_sizes(int, ushort*);
-
     
 
     DataObjectGroup (
     ) : 
-        vao(Vao()),
-        vbo(Vbo()),
-        ibo(Ibo()) 
+        vao(VAO()),
+        vbo(VBO()),
+        ibo(IBO()) 
     { }
 
     DataObjectGroup (
-        Vao vao,
-        Vbo vbo,
-        Ibo ibo
+        VAO vao,
+        VBO vbo,
+        IBO ibo
     ) : 
         vao(vao), 
         vbo(vbo), 
@@ -134,8 +129,10 @@ public:
     ~DataObjectGroup (
     ) 
     { }
-};
+} DOG;
 
+
+//TODO:
 //PROGRAM
 
 //SHADER

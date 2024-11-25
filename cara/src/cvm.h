@@ -1,117 +1,85 @@
 
-#ifndef __CVM_HPP__
-#define __CVM_HPP__
+#ifndef __CVM_H__
+#define __CVM_H__
 
-#ifndef __FUNCTIONAL__
-#define __FUNCTIONAL__
 #include <functional>
-#endif
 
-#ifndef __VECTOR__
-#define __VECTOR__
 #include <vector>
-#endif
 
-#ifndef __FSTREAM__
-#define __FSTREAM__
 #include <fstream>
-#endif
 
-#ifndef __IOSTREAM__
-#define __IOSTREAM__
 #include <iostream>
+
+#ifndef REGCT
+#define REGCT                     16  //The number of registers to be maintained throughout the program.
 #endif
 
-#define LEN_REF_BUFS 3
-
-#if LEN_REF_BUFS < 3
-#error "LEN_REF_BUFS is too small."
+#ifndef DEFAULT_REGISTER_RESERVE
+#define DEFAULT_REGISTER_RESERVE  8  //The defulaut ammount of bytes per register,
 #endif
+
+//CONFIG WARNING: Expected to be primitive unsigned linearly numerical type ( char , short , int , etc. , )
+#ifndef __REGPTR_T__
+#define __REGPTR_T__ //register POINTER
+typedef unsigned char Pointer_t;
+#endif
+
+
 
 #include "vmdefs.h"
 #include "defs.h"
 #include "panic.h"
 
-class CaraVM {
+typedef std::vector<byte> Register;
+
+typedef class CaraVM {
 public:
-    static std::ifstream* ifs;//in file stream of the input file <3
-    static char const ** error_msg;
-    static bool error;
-    static char* path;
-
-    static byte* program_data;
-
-    const static std::vector<std::function<void(BCI&)>> instrset;
+	static const char** error_msg;
+	static bool error;
 
 
-    /* * bci
-     *
-     * Creates a ByteCodeIter for ifs
-     *
-     * */
-    static BCI bci();
+	static std::vector<Register> bufs;
+	static unsigned long long int pPtr; //process pointer 
 
+	static byte* program_data;
+    inline static void* CARA_NULL() noexcept { return CaraVM::program_data; } 
+
+	/* * bci
+	 *
+	 * Creates a ByteCodeIter for ifs
+	 *
+	 * */
+	static BCI bci();
 
     static void start();
 
+    // Places data at RegPtr_t into target `byte` for until it's size
+    static void drefptr(Pointer_t, byte); // 
+    
+	static byte* refptr(Pointer_t); // reference a byte
 
-    /* * drefptr
-     *
-     * Dereference A Pointer
-     *
-     * Dereferences the pointer held in `refbufs[specified]`
-     * 
-     * ________________________________________
-     * > byte : index of pointer in `refbufs`
-     * ________________________________________
-     *
-     * - NOTE: Macro Expansion byte => unsigned char
-     * - NOTE: Macro Expansion STBTYE => static unsigned char
-     *
-     * */
-    static byte* drefptr(byte);
-
-    /* *  numerateptr
-     *
-     * Numerate a Pointer to long long
-     *
-     * Turns the pointer held in `refbufs[specifed]` into a unsigned long long int
-     *
-     * ____________________________________________________
-     * > byte : index of pointer in `refbufs` to numerate
-     * ____________________________________________________
-     *
-     * - NOTE: Macro Expansion byte => unsigned char
-     * - NOTE: Macro Expansion STULLONG => unsinged long long int
-     *
-     * */
-    static unsigned long long numerateptr(byte);
-
-    /* * parse_opening_headers
-     *
-     * Parse the Opening Headers to a Program.
-     *
-     * ____________________________________________________________________
-     * BCI& `ByteCodeIter&` : ByteCodeIter reference to draw headers from
-     * ____________________________________________________________________
-     *
-     * - NOTE: Macro Expansion STVD => static void
-     * - NOTE: Macro Expansion BCI => ByteCodeIter
-     *
-     * */
-    static void parse_opening_headers(BCI&);
+	static void parse_opening_headers(BCI&);
 
     static byte refbytes;
-    static byte** refbufs;
-private:
-    static unsigned long instrct;
 
-    
-    static void init_refbufs();
-    static void clean_refbufs();
-    
+    inline static void set_path(const char* path) {
+		CaraVM::path = path;
+    }
+    static void bind_ifs();
+
+	static void init_bufs();
+    static void clear_bufs();
+ 
+private:
+	static const char* path;
+	static std::ifstream* ifs; //In file stream of the input file <3
+	static void __Validate__();	
+   
     CaraVM() {}
     ~CaraVM() {}
-};
+} CVM;
 
 #endif
+
+
+

@@ -1,8 +1,5 @@
 
-#ifndef __VECTOR__
-#define __VECTOR__
 #include <vector>
-#endif
 
 #include <iostream>
 #include <functional>
@@ -18,6 +15,7 @@
 #include "instrs.h"
 
 
+//draw function ran after each VAO is enabled,
 typedef std::function<void()> drawFN;
 
 class Cara {
@@ -41,7 +39,7 @@ public:
     static void add_vaos(int, GLuint*);
     static void add_vaos(int, GLuint*, drawFN**);
     static void add_vaos(const std::vector<Vao>&);
-    
+	
     static int find_vao_idx(GLuint);
     
     static void rm_vao(int);

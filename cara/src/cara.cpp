@@ -1,17 +1,12 @@
-
 #include "cara.h"
 
-
 std::vector<Vao> 
-    
     Cara::vaos;
 
 drawFN* 
-    
     Cara::default_drawFN;
 
 std::vector<drawFN*> 
-    
     Cara::drawFNs;
 
 void Cara::add_vao(GLuint vao) {
@@ -66,6 +61,7 @@ void Cara::rm_vao(int idx) {
         return;
     Cara::vaos.erase(Cara::vaos.begin() + idx);
 }
+
 void Cara::rm_vaos(int start, int end) {
     Cara::vaos.erase(Cara::vaos.begin() + start, Cara::vaos.begin() + end);
 }
@@ -100,8 +96,8 @@ void Cara::init(const char* path) {
     Cara::vaos = {};
     Cara::drawFNs = {};
     Cara::default_drawFN = nullptr;
-    CaraVM::path = (char*)path;
-    CaraVM::ifs = new std::ifstream(path);
+    CaraVM::set_path(path);
+    CaraVM::bind_ifs();
 }
 void Cara::init_verbose(const char*) {
     panic_unimplemented("Cara::init_verbose(const char*)");    
@@ -124,14 +120,12 @@ void Cara::draw() {
 
 }
 
-
 void Cara::start() {
     CaraVM::start();
 }
 
-
 Cara::Cara() {
-    exit(-1);
 }
+
 Cara::~Cara(){
 }

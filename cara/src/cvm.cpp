@@ -1,108 +1,122 @@
 #include "cvm.h"
 
-std::ifstream* CaraVM::ifs = nullptr;
+std::ifstream* CVM::ifs = nullptr;
+const char* CVM::path = nullptr;
 
-char* CaraVM::path = nullptr;
+bool CVM::error = false; 
+char const** CVM::error_msg;
 
-bool CaraVM::error = false; 
+unsigned long long int CVM::pPtr;
+std::vector<Register> CVM::bufs(REGCT +1);
+byte CVM::refbytes = 0;
 
-char const** CaraVM::error_msg;
+byte* CVM::program_data;
 
-byte** CaraVM::refbufs;
+void CVM::__Validate__() {
 
-byte* CaraVM::program_data;
-
-byte CaraVM::refbytes = 0;
-
-unsigned long int CaraVM::instrct = 0;
-
-static std::function<byte()> ifs_peek = []() -> byte {
-    if (!CaraVM::ifs->good()) {
-        CaraVM::error = true;
-        CaraVM::error_msg = &prematureEOF;   
+	if (REGCT < 12) {
+		panic("Register Count Not High Enough.");			
     }
-    return CaraVM::ifs->peek();
-}; 
+	
+ 	if ( DEFAULT_REGISTER_RESERVE < 0 || DEFAULT_REGISTER_RESERVE > 0xff ) {
+		panic("Default Register Reserve must be between 0 and 255");
+	}
 
-static std::function<byte()> ifs_get = []() -> byte {
-    if (!CaraVM::ifs->good()) {
-        CaraVM::error = true;
-        CaraVM::error_msg = &prematureEOF;   
-    }
-    return CaraVM::ifs->get();
-};
+	if (sizeof(Pointer_t) > 32 || sizeof(Pointer_t) < 1) {
 
-BCI CaraVM::bci() {
+		panic("Poninter size (RegPtr_t) must be between 1 and 32 bytes");
+
+	}
+}
+
+byte* CVM::refptr(Pointer_t ptr) {
+    
+    byte* rv = (byte*) (CVM::pPtr + ptr);
+
+	return rv;
+
+}
+
+BCI CVM::bci() {
     return ByteCodeIter (
-        &ifs_peek,
-        &ifs_get
+         []() -> byte {
+            if (!CVM::ifs->good()) {
+                CVM::error = true;
+                CVM::error_msg = &prematureEOF;   
+                return -1;
+            }
+            return CVM::ifs->peek();
+        },
+        []() -> byte {
+            if (!CVM::ifs->good()) {
+                CVM::error = true;
+				CVM::error_msg = &prematureEOF;
+                return -1;
+            }
+            return CVM::ifs->get();
+        },
+        []() -> bool {
+            return CVM::ifs->good();
+        }
     );
 }
 
-void CaraVM::start() {
-    panic_unimplemented("CaraVM::start()");
+
+void CVM::drefptr(Pointer_t memPtr, byte target) {
+    if (CVM::error)
+        return;
+    if (target >= REGCT) {
+        CVM::error = true;
+        CVM::error_msg = &refidxOB;
+        return;
+    }
+
+    byte* ptr = CVM::refptr(memPtr);
+
+	
+	// Remember size
+	byte size = CVM::bufs.at(target).size();
+	
+	// Clear buffer to refill with same size
+	CVM::bufs.at(target).clear();
+	
+	// Add each byte to target for until size
+	for (byte i = 0; i < size; i++, ptr++)
+		CVM::bufs.at(target).push_back(*ptr);
     
-    if (!CaraVM::ifs || CaraVM::ifs->fail() || !CaraVM::ifs->good()) {
-        panic_ifs_failue(CaraVM::path);
-    }
-    CaraVM::init_refbufs();
+	
+
+};
+
+void CVM::start() {
+    panic_unimplemented("CaraVM::start()");
+		
 }
 
-byte* CaraVM::drefptr(byte idx) {
-    if (CaraVM::error)
-        return nullptr;
-    if (idx > LEN_REF_BUFS) {
-        CaraVM::error = true;
-        CaraVM::error_msg = &refidxOB;
-        return nullptr;
-    }
-
-    byte* ret = CaraVM::program_data;
-
-    for (byte i = CaraVM::refbytes -1, j = 0; i >= 0; i--, j++) {
-        ret += CaraVM::refbufs[idx][i] << j;
-    }
-
-    if (ret == CaraVM::program_data)
-        panic_nullptr__deref();
-
-    return ret;
-}
-
-//FIXME: I don't remember writing this 3;
-
-// unsigned long long CaraVM::numerateptr(byte idx) {
-//     if (CaraVM::error)
-//         return -1;
-//     if (idx > LEN_REF_BUFS) {
-//         CaraVM::error = true;
-//         CaraVM::error_msg = &refidxOB;
-//         return -1;
-//     }
-
-//     ull ret = 0;
-
-//     for (byte i = (CaraVM::refbytes <= sizeof(ull)? CaraVM::refbytes -1 : sizeof(ull) -1), j = 0; i >= 0; i--, j++) {
-//         ret |= CaraVM::refbufs[idx][i] << j;
-//     }
-
-//     return ret;
-// }
-
-void CaraVM::parse_opening_headers(BCI& bci) {
+void CVM::parse_opening_headers(BCI& bci) {
     panic_unimplemented("CaraVM::parse_opening_headers(ByteCodeIter&)");
 } 
 
-void CaraVM::init_refbufs() {
-    CaraVM::refbufs = new byte* [LEN_REF_BUFS];
-    for (int i = 0; i < LEN_REF_BUFS; i++) {
-        CaraVM::refbufs[i] = new byte[CaraVM::refbytes];
-    }
+void CVM::init_bufs() {
+    CVM::__Validate__();
+    if (CVM::bufs.size() > 0)
+		CVM::clear_bufs();
+
+    for (int i = 0; i < REGCT; i++) {
+        CVM::bufs.push_back({});
+		CVM::bufs.at(i).reserve(DEFAULT_REGISTER_RESERVE);
+	}
 }
 
-void CaraVM::clean_refbufs() {
-    for (int i = 0; i < LEN_REF_BUFS; i++) {
-        delete[] CaraVM::refbufs[i];
-        CaraVM::refbufs[i] = nullptr;
-    } 
+
+void CVM::clear_bufs() {
+    for (int i = 0; i < REGCT; i++) {
+        CVM::bufs[i].clear();
+	} 
+}
+
+void CVM::bind_ifs() {
+	if (CVM::ifs) //Delete heap allocation every renewal so we don't eat ourselves
+		delete CVM::ifs;
+    CVM::ifs = new std::ifstream(CVM::path);
 }

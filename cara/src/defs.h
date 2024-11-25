@@ -1,11 +1,8 @@
 
-#if !defined(VMFDEFS) && defined(__VMDEFS_H__)
-#define      VMFDEFS
-typedef ByteCodeIter    BCI;
-#endif
 
 #ifndef TYPEFDEFS
 #define TYPEFDEFS
+
 typedef unsigned char  byte;
 typedef unsigned short ushort;
 typedef unsigned int uint;
